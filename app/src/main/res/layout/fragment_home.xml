@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/swipe_refresh_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--
+    <FrameLayout
+        android:id="@+id/framelayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+        </android.support.v4.view.ViewPager>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            >
+
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="10dp"
+                />
+            <LinearLayout
+                android:id="@+id/points_group"
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:gravity="center"
+                android:layout_marginBottom="12dp"
+                android:layout_below="@id/title_text"
+                android:orientation="horizontal"
+                />
+
+        </RelativeLayout>
+
+    </FrameLayout>
+-->
+
+    <ListView
+        android:id="@+id/main_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:dividerHeight="10dp"
+        android:divider="@android:color/transparent"
+        android:padding="5dp"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        android:layout_weight="1"
+        >
+    </ListView>
+
+</android.support.v4.widget.SwipeRefreshLayout>

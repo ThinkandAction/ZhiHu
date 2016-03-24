@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/swipe_refresh_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ListView
+        android:id="@+id/main_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:dividerHeight="10dp"
+        android:divider="@android:color/transparent"
+        android:padding="5dp"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        android:layout_weight="3"
+        >
+    </ListView>
+
+</android.support.v4.widget.SwipeRefreshLayout>

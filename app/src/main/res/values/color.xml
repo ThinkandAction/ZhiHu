@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="item_clicked_color">#6699FF</drawable>
+    <drawable name="item_background">#FFFFFF</drawable>
+</resources>
