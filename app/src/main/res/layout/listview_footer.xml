@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:gravity="center"
+    >
+
+    <!--高度的设置,padding不要在父控件中设置-->
+    <ProgressBar
+        android:id="@+id/pull_to_refresh_load_progress"
+        style="@android:style/Widget.ProgressBar.Small.Inverse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="true"
+        android:paddingBottom="8dip"
+        android:paddingTop="5dip"
+        />
+
+</RelativeLayout>

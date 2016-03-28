@@ -1,9 +1,8 @@
 package com.example.wujie.zhihu.Adapter;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,70 +10,42 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.example.wujie.zhihu.BitmapCache;
-import com.example.wujie.zhihu.JsonLatestNews;
 import com.example.wujie.zhihu.R;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.List;
 
 /**
- * Created by wujie on 2016/3/13.
+ * Created by wujie on 2016/3/26.
  */
-public class MainListAdapter extends BaseAdapter {
+public class FragmentListAdapter extends BaseAdapter {
 
-    private String[] mUrl;
-    private String[] mTitle;
+    private static final int TYPE_TOPSTORIES = 0;
+    private static final int TYPE_STORIES = 1;
+    private static final int TYPE_BACKGROUND = 2;  //注意：数值不要大于getViewTypeCount()的值
+
     private String[] top_Stories_Title;
-    private String[] top_Stories_Url;
-    private String background;
-    private String descripton;
-    private int mResource;
-    private int mText;
-    private int mImage;
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private ImageLoader mImageLoader;
-    private int top_resource;
     private ArrayList<View> viewContainer;
     private ViewPager viewPager;
     private ViewGroup linearLayoutPoints;
     private TextView mTextView;
-    private int mType;
-    private int image_resources;
+    private List<HashMap<String, Object>> mList;
+    private int[] mLayout;
 
-    public MainListAdapter(Context context, String[] title, String[] url, String background,String description, int resource, int image_resource, int text, int image, int type) {
+
+    public FragmentListAdapter(Context context, List<HashMap<String, Object>> list, int[] layout){
         mContext = context;
-        mUrl = url;
-        mTitle = title;
-        this.background = background;
-        this.descripton = description;
-        mResource = resource;
-        this.image_resources = image_resource;
-        mText = text;
-        mImage = image;
-        mType = type;
-        mLayoutInflater = LayoutInflater.from(context);
-
-        RequestQueue mQueue = Volley.newRequestQueue(context);
-        mImageLoader = new ImageLoader(mQueue, new BitmapCache());
-    }
-
-    public MainListAdapter(Context context, String[] title, String[] url, String[] top_Stories_Title,
-                           String[] top_Stories_Url, int resource, int top_resource, int text, int image, int type) {
-        mContext = context;
-        mUrl = url;
-        mTitle = title;
-        this.top_Stories_Title = top_Stories_Title;
-        this.top_Stories_Url = top_Stories_Url;
-        mResource = resource;
-        this.top_resource = top_resource;
-        mText = text;
-        mImage = image;
-        mType = type;
+        mList = list;
+        mLayout = layout;
         mLayoutInflater = LayoutInflater.from(context);
 
         RequestQueue mQueue = Volley.newRequestQueue(context);
@@ -83,7 +54,7 @@ public class MainListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mUrl.length+1;
+        return mList.size();
     }
 
     @Override
@@ -98,21 +69,29 @@ public class MainListAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+        if (mList.get(position).containsKey("Top_Stories_Title")){
+            return TYPE_TOPSTORIES;
+        } else if (mList.get(position).containsKey("Stories_Title")){
+            return TYPE_STORIES;
+        }else {
+            return TYPE_BACKGROUND;
+        }
     }
 
     @Override
     public int getViewTypeCount() {
-        return super.getViewTypeCount();
+        return 3;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         ViewHolder viewHolder;
-        if (position == 0 && mType == 1){
-            view = mLayoutInflater.inflate(top_resource, parent, false);
-            for (int i = 0; i < top_Stories_Url.length; i++){
+        if (getItemViewType(position) == TYPE_TOPSTORIES){
+            view = mLayoutInflater.inflate(mLayout[0], parent, false);
+            top_Stories_Title = (String[])mList.get(position).get("Top_Stories_Title");
+            Log.d("TOP", top_Stories_Title.toString());
+            for (int i = 0; i < top_Stories_Title.length; i++){
                 ImageView imageView = new ImageView(mContext);
                 imageView.setImageResource(R.drawable.ic_launcher);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(25, 25);
@@ -124,8 +103,9 @@ public class MainListAdapter extends BaseAdapter {
             }
 
             ArrayList<View> arrayList = new ArrayList<View>();
+            String[] top_Stories_Url = (String[])mList.get(position).get("Top_Stories_Url");
             for (int i = 0; i <top_Stories_Url.length; i++) {
-                View imageView = mLayoutInflater.inflate(R.layout.view_pager_content, null);
+                View imageView = mLayoutInflater.inflate(R.layout.view_pager_content, null); //-----------------------
                 arrayList.add(imageView);
             }
             //viewContainer = new ArrayList<View>();
@@ -144,30 +124,30 @@ public class MainListAdapter extends BaseAdapter {
             viewPager.setAdapter(new MyPageAdapter(viewContainer));
             mTextView.setText(top_Stories_Title[position]);
             viewPager.addOnPageChangeListener(new ViewpagerListener());
-        }else if (position == 0 && mType == 0){
-            view = mLayoutInflater.inflate(image_resources, parent, false);
+        }else if (getItemViewType(position) == TYPE_BACKGROUND){
+            view = mLayoutInflater.inflate(mLayout[2], parent, false);
             RequestQueue mQueue = Volley.newRequestQueue(mContext);
             mImageLoader = new ImageLoader(mQueue, new BitmapCache());
             ImageView imageView = (ImageView)view.findViewById(R.id.imageView);
             ImageLoader.ImageListener listener = ImageLoader.getImageListener(imageView, 0, 0);
-            mImageLoader.get(background, listener);
+            mImageLoader.get(mList.get(position).get("Background").toString(), listener);
             TextView textView = (TextView)view.findViewById(R.id.title_text);
-            textView.setText(descripton);
+            textView.setText(mList.get(position).get("Description").toString());
 
         } else {
             if (convertView == null){
-                view = mLayoutInflater.inflate(mResource, parent, false);
+                view = mLayoutInflater.inflate(mLayout[1], parent, false);
                 viewHolder = new ViewHolder();
-                viewHolder.imageView = (ImageView) view.findViewById(mImage);
-                viewHolder.textView= (TextView) view.findViewById(mText);
+                viewHolder.imageView = (ImageView) view.findViewById(R.id.main_list_image);
+                viewHolder.textView= (TextView) view.findViewById(R.id.main_list_textview);
                 view.setTag(viewHolder);
             } else {
                 view = convertView;
                 viewHolder = (ViewHolder)view.getTag();
             }
-            viewHolder.textView.setText(mTitle[position-1]);
+            viewHolder.textView.setText(mList.get(position).get("Stories_Title").toString());
             String url = "";
-            url = mUrl[position-1];
+            url = mList.get(position).get("Stories_Url").toString();
             ImageLoader.ImageListener listener = ImageLoader.getImageListener(viewHolder.imageView, 0, 0);
             mImageLoader.get(url, listener);
         }
