@@ -1,41 +1,27 @@
 package com.example.wujie.zhihu.Fragment;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.TextView;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.example.wujie.zhihu.Activity.ItemActivity;
 import com.example.wujie.zhihu.Adapter.FragmentListAdapter;
-import com.example.wujie.zhihu.Adapter.MainListAdapter;
 import com.example.wujie.zhihu.GsonRequest;
-import com.example.wujie.zhihu.JsonLatestNews;
+import com.example.wujie.zhihu.Info.JsonLatestNews;
 import com.example.wujie.zhihu.R;
 import com.example.wujie.zhihu.View.MySwipeRefreshLayout;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -78,6 +64,7 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         mainListView = (ListView)view.findViewById(R.id.main_list);
         mMySwipeRefreshLayout = (MySwipeRefreshLayout)view.findViewById(R.id.swipe_refresh_layout);
+        mMySwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight);
 
         mStories = new LinkedList<JsonLatestNews.Stories>();
         context = getActivity();

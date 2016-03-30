@@ -1,7 +1,5 @@
 package com.example.wujie.zhihu.Adapter;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -15,7 +13,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.example.wujie.zhihu.BitmapCache;
-import com.example.wujie.zhihu.JsonLatestNews;
 import com.example.wujie.zhihu.R;
 
 import java.util.ArrayList;

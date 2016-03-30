@@ -1,9 +1,9 @@
 package com.example.wujie.zhihu;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -36,14 +36,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawableResource(R.color.colorwGrey);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("首页");
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_launcher);
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         homeFragment = HomeFragment.newInstance(LATEST_NEWS);
         fragmentTransaction.replace(R.id.main_layout_group,
-                homeFragment).commit();
+                homeFragment);
+        fragmentTransaction.commit();
 
 
 
@@ -66,32 +69,38 @@ public class MainActivity extends AppCompatActivity {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                Log.d("menuItem:", menuItem.getTitle() + "");
                 mDrawerLayout.closeDrawers();
-                FragmentManager fragmentManager = getFragmentManager();
+                FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                //fragmentTransaction.hide(homeFragment);
+                /*if (homeFragment != null){
+                    fragmentTransaction.hide(homeFragment);
+                }
+                if (noBoringFragment != null){
+                    fragmentTransaction.hide(noBoringFragment);
+                }*/
                 switch ((String) menuItem.getTitle()) {
                     case "首页":
                         if (homeFragment == null) {
                         // 如果homeFragment为空，则创建一个并添加到界面上
                             homeFragment = HomeFragment.newInstance(LATEST_NEWS);
-                        fragmentTransaction.replace(R.id.main_layout_group, homeFragment);
+                        fragmentTransaction.add(R.id.main_layout_group, homeFragment);
                     } else {
                         // 如果homeFragment不为空，则直接将它显示出来
-                            fragmentTransaction.replace(R.id.main_layout_group, homeFragment);
+                            fragmentTransaction.show(homeFragment);
                     }
+                        toolbar.setTitle("首页");
                         break;
 
                     case "不许无聊":
                         if (noBoringFragment == null) {
                         // 如果homeFragment为空，则创建一个并添加到界面上
                         noBoringFragment = NoBoringFragment.newInstance(NO_BORING);
-                        fragmentTransaction.replace(R.id.main_layout_group, noBoringFragment);
+                        fragmentTransaction.add(R.id.main_layout_group, noBoringFragment);
                     } else {
                         // 如果homeFragment不为空，则直接将它显示出来
-                        fragmentTransaction.replace(R.id.main_layout_group, noBoringFragment);
+                        fragmentTransaction.show(noBoringFragment);
                     }
+                        toolbar.setTitle("不许无聊");
                         break;
                 }
                 fragmentTransaction.commit();

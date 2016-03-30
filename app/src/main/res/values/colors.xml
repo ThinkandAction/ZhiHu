@@ -6,4 +6,5 @@
     <color name="colorwGrey">#EFEFEF</color>
     <color name="colorwWhite">#FFFFFF</color>
     <color name="colorItemClicked">#6699FF</color>
+    <color name="colorPrimaryLight">#6699FF</color>
 </resources>

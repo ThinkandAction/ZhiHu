@@ -1,10 +1,10 @@
 package com.example.wujie.zhihu.Fragment;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,19 +16,16 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.example.wujie.zhihu.Activity.NoBoringItemActivity;
+import com.example.wujie.zhihu.Activity.ItemActivity;
 import com.example.wujie.zhihu.Adapter.FragmentListAdapter;
-import com.example.wujie.zhihu.Adapter.MainListAdapter;
 import com.example.wujie.zhihu.GsonRequest;
 import com.example.wujie.zhihu.Info.NoBoringInfo;
-import com.example.wujie.zhihu.JsonLatestNews;
 import com.example.wujie.zhihu.R;
 import com.example.wujie.zhihu.View.MySwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -63,6 +60,7 @@ public class NoBoringFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_no_boring, container, false);
         mainListView = (ListView)view.findViewById(R.id.main_list);
         mMySwipeRefreshLayout = (MySwipeRefreshLayout)view.findViewById(R.id.swipe_refresh_layout);
+        mMySwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight);
 
         context = getActivity();
         mStories = new ArrayList<NoBoringInfo.StoriesBean>();
@@ -100,7 +98,7 @@ public class NoBoringFragment extends Fragment {
                 } else {
                     Intent intent = new Intent();
                     Log.d("position", position+"");
-                    intent.setClass(context, NoBoringItemActivity.class);
+                    intent.setClass(context, ItemActivity.class);
                     intent.putExtra("url", STORY + mStories.get(position - 1).getId());
                     startActivity(intent);
                 }

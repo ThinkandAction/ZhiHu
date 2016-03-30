@@ -1,4 +1,4 @@
-package com.example.wujie.zhihu;
+package com.example.wujie.zhihu.Info;
 
 import android.os.Parcelable;
 

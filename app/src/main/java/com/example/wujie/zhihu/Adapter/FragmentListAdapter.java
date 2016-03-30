@@ -145,11 +145,18 @@ public class FragmentListAdapter extends BaseAdapter {
                 view = convertView;
                 viewHolder = (ViewHolder)view.getTag();
             }
+
             viewHolder.textView.setText(mList.get(position).get("Stories_Title").toString());
             String url = "";
             url = mList.get(position).get("Stories_Url").toString();
-            ImageLoader.ImageListener listener = ImageLoader.getImageListener(viewHolder.imageView, 0, 0);
+
+            ImageLoader.ImageListener listener = ImageLoader.getImageListener(viewHolder.imageView, R.color.colorwWhite, 0);//设置了默认图片后就不会导致图片加载错乱闪动
             mImageLoader.get(url, listener);
+            viewHolder.imageView.setTag(url);
+
+
+
+
         }
         return view;
     }

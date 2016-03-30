@@ -1,10 +1,13 @@
-package com.example.wujie.zhihu;
+package com.example.wujie.zhihu.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
+
+import com.example.wujie.zhihu.MainActivity;
+import com.example.wujie.zhihu.R;
 
 /**
  * Created by wujie on 2016/3/13.
