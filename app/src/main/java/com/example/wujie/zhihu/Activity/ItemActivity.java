@@ -1,6 +1,9 @@
 package com.example.wujie.zhihu.Activity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -19,10 +24,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-import com.example.wujie.zhihu.BitmapCache;
 import com.example.wujie.zhihu.Info.ContentInfo;
 import com.example.wujie.zhihu.GsonRequest;
 import com.example.wujie.zhihu.R;
+import com.example.wujie.zhihu.cache.LevelTwoCache;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class ItemActivity extends AppCompatActivity {
 
@@ -31,11 +37,14 @@ public class ItemActivity extends AppCompatActivity {
     private String mUrl;
     private ContentInfo mResponse;
     private ImageLoader mImageLoader;
+    private static final int MAX_DISKSIZE = 10 * 1024 *1024;
+    private static final int MAX_LRUCACHESIZE = 10 * 1024 *1024;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawableResource(R.color.colorwGrey);
+        //getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);//启用transition的API（被调用的Activity中设置）
         setContentView(R.layout.activity_item);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -68,24 +77,29 @@ public class ItemActivity extends AppCompatActivity {
         });*/
         loadItem();
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);//透明导航栏
 
-        /*listView = (ListView)findViewById(R.id.listView);
-        String[] theme = new String[]{"首页", "日常心理学", "用户推荐日报", "电影日报",
-                "不许无聊", "设计日报", "大公司日报", "财经日报", "互联网安全", "开始游戏", "音乐日报", "动漫日报", "体育日报",
-        "dawd", "dwdawd", "dwda","dwad"};
-        ArrayList<HashMap<String, Object>> arrayList = new ArrayList<HashMap<String, Object>>();
-        for (int i = 0; i < theme.length; i++){
-            HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("name", theme[i]);
-            map.put("image", R.drawable.icon_plus_touming);
-            arrayList.add(map);
+            setTranslucentStatus(true);
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setStatusBarTintResource(R.color.colorPrimary);
         }
+    }
 
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, arrayList, R.layout.item_menu_list, new String[]{"name", "image"},
-                new int[]{R.id.menu_item, R.id.image_button});
-        listView.setAdapter(simpleAdapter);
-        */
+    @TargetApi(19)
+    private void setTranslucentStatus(boolean on) {
+        Window win = getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
     }
 
     public void loadItem(){
@@ -102,9 +116,12 @@ public class ItemActivity extends AppCompatActivity {
                         String body = "<html><header>" + linkCss + "</header>" + mResponse.getBody() + "</body></html>";
                         webView.loadDataWithBaseURL(mUrl, body, "text/html", "utf-8", null);
                         RequestQueue mQueue = Volley.newRequestQueue(ItemActivity.this);
-                        mImageLoader = new ImageLoader(mQueue, new BitmapCache());
-                        ImageLoader.ImageListener listener = ImageLoader.getImageListener((ImageView) findViewById(R.id.imageView), 0, 0);
-                        mImageLoader.get(response.getImage(), listener);
+                        if (response.getImage() != null){
+                            mImageLoader = new ImageLoader(mQueue, new LevelTwoCache(ItemActivity.this, "image", MAX_DISKSIZE, MAX_LRUCACHESIZE,
+                                    Bitmap.CompressFormat.JPEG, 70));
+                            ImageLoader.ImageListener listener = ImageLoader.getImageListener((ImageView) findViewById(R.id.imageView), 0, 0);
+                            mImageLoader.get(response.getImage(), listener);
+                        }
 
                     }
                 }, new Response.ErrorListener() {

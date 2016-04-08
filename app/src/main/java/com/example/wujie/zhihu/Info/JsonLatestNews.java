@@ -12,9 +12,9 @@ import java.util.List;
 public class JsonLatestNews {
     private String date;
 
-    private LinkedList<Stories> stories ;
+    private ArrayList<Stories> stories ;
 
-    private LinkedList<Top_stories> top_stories ;
+    private ArrayList<Top_stories> top_stories ;
 
     public void setDate(String date){
         this.date = date;
@@ -22,22 +22,22 @@ public class JsonLatestNews {
     public String getDate(){
         return this.date;
     }
-    public void setStories(LinkedList<Stories> stories){
+    public void setStories(ArrayList<Stories> stories){
         this.stories = stories;
     }
-    public LinkedList<Stories> getStories(){
+    public ArrayList<Stories> getStories(){
         return this.stories;
     }
-    public void setTop_stories(LinkedList<Top_stories> top_stories){
+    public void setTop_stories(ArrayList<Top_stories> top_stories){
         this.top_stories = top_stories;
     }
-    public LinkedList<Top_stories> getTop_stories(){
+    public ArrayList<Top_stories> getTop_stories(){
         return this.top_stories;
     }
 
 
     public class Stories {
-        private LinkedList<String> images ;
+        private ArrayList<String> images ;
 
         private int type;
 
@@ -47,10 +47,10 @@ public class JsonLatestNews {
 
         private String title;
 
-        public void setImages(LinkedList<String> images){
+        public void setImages(ArrayList<String> images){
             this.images = images;
         }
-        public LinkedList<String> getImages(){
+        public ArrayList<String> getImages(){
             return this.images;
         }
         public void setType(int type){

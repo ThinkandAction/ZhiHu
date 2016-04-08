@@ -1,4 +1,4 @@
-package com.example.wujie.zhihu;
+package com.example.wujie.zhihu.cache;
 
 import android.graphics.Bitmap;
 import android.util.LruCache;
@@ -8,11 +8,10 @@ import com.android.volley.toolbox.ImageLoader;
 /**
  * Created by wujie on 2016/3/14.
  */
-public class BitmapCache implements ImageLoader.ImageCache {
+public class LruImageCache implements ImageLoader.ImageCache {
 
     private LruCache<String, Bitmap> mCache;
-    public BitmapCache(){
-        int maxSize = 10 * 1024 * 1024;
+    public LruImageCache(int maxSize){
         mCache = new LruCache<String, Bitmap>(maxSize) {
             @Override
             protected int sizeOf(String key, Bitmap bitmap) {

@@ -25,6 +25,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile files('libs/volley.jar')
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile files('libs/android-support-v7-recyclerview.jar')
+    compile 'com.google.code.gson:gson:2.3'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.android.support:cardview-v7:23.0.1'
+    compile files('libs/android-observablescrollview-1.6.0-sources.jar')
+    compile 'com.github.ksoichiro:android-observablescrollview:1.2.1'
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
 }

@@ -1,6 +1,7 @@
 package com.example.wujie.zhihu.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,8 +15,8 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-import com.example.wujie.zhihu.BitmapCache;
 import com.example.wujie.zhihu.R;
+import com.example.wujie.zhihu.cache.LevelTwoCache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,8 @@ public class FragmentListAdapter extends BaseAdapter {
     private static final int TYPE_TOPSTORIES = 0;
     private static final int TYPE_STORIES = 1;
     private static final int TYPE_BACKGROUND = 2;  //注意：数值不要大于getViewTypeCount()的值
+    private static final int MAX_DISKSIZE = 10 * 1024 *1024;
+    private static final int MAX_LRUCACHESIZE = 10 * 1024 *1024;
 
     private String[] top_Stories_Title;
     private Context mContext;
@@ -49,7 +52,8 @@ public class FragmentListAdapter extends BaseAdapter {
         mLayoutInflater = LayoutInflater.from(context);
 
         RequestQueue mQueue = Volley.newRequestQueue(context);
-        mImageLoader = new ImageLoader(mQueue, new BitmapCache());
+        mImageLoader = new ImageLoader(mQueue, new LevelTwoCache(context, "image", MAX_DISKSIZE, MAX_LRUCACHESIZE,
+                Bitmap.CompressFormat.JPEG, 70));
     }
 
     @Override
@@ -112,7 +116,8 @@ public class FragmentListAdapter extends BaseAdapter {
             viewContainer = arrayList;
 
             RequestQueue mQueue = Volley.newRequestQueue(mContext);
-            mImageLoader = new ImageLoader(mQueue, new BitmapCache());
+            mImageLoader = new ImageLoader(mQueue, new LevelTwoCache(mContext, "image", MAX_DISKSIZE, MAX_LRUCACHESIZE,
+                    Bitmap.CompressFormat.JPEG, 70));
             for (int i = 0; i <top_Stories_Url.length; i++) {
                 String test_url = "";
                 test_url = top_Stories_Url[i];
@@ -127,7 +132,8 @@ public class FragmentListAdapter extends BaseAdapter {
         }else if (getItemViewType(position) == TYPE_BACKGROUND){
             view = mLayoutInflater.inflate(mLayout[2], parent, false);
             RequestQueue mQueue = Volley.newRequestQueue(mContext);
-            mImageLoader = new ImageLoader(mQueue, new BitmapCache());
+            mImageLoader = new ImageLoader(mQueue, new LevelTwoCache(mContext, "image", MAX_DISKSIZE, MAX_LRUCACHESIZE,
+                    Bitmap.CompressFormat.JPEG, 70));
             ImageView imageView = (ImageView)view.findViewById(R.id.imageView);
             ImageLoader.ImageListener listener = ImageLoader.getImageListener(imageView, 0, 0);
             mImageLoader.get(mList.get(position).get("Background").toString(), listener);
@@ -152,10 +158,6 @@ public class FragmentListAdapter extends BaseAdapter {
 
             ImageLoader.ImageListener listener = ImageLoader.getImageListener(viewHolder.imageView, R.color.colorwWhite, 0);//设置了默认图片后就不会导致图片加载错乱闪动
             mImageLoader.get(url, listener);
-            viewHolder.imageView.setTag(url);
-
-
-
 
         }
         return view;
