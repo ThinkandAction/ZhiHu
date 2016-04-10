@@ -1,7 +1,6 @@
 package com.example.wujie.zhihu.Adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,7 +16,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.example.wujie.zhihu.Interface.OnRecyclerItemClickListener;
 import com.example.wujie.zhihu.R;
-import com.example.wujie.zhihu.cache.LevelTwoCache;
+import com.example.wujie.zhihu.cache.LruImageCache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,8 +46,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
         mRecyclerItemClickListener = listener;
 
         RequestQueue mQueue = Volley.newRequestQueue(context);
-        mImageLoader = new ImageLoader(mQueue, new LevelTwoCache(context, "image", MAX_DISKSIZE, MAX_LRUCACHESIZE,
-                Bitmap.CompressFormat.JPEG, 70));
+        //mImageLoader = new ImageLoader(mQueue, new LevelTwoCache(context, "image", MAX_DISKSIZE, MAX_LRUCACHESIZE,
+                //Bitmap.CompressFormat.JPEG, 70));
+        mImageLoader = new ImageLoader(mQueue, new LruImageCache(MAX_LRUCACHESIZE));
     }
 
     @Override

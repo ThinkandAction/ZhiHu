@@ -16,7 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.example.wujie.zhihu.R;
-import com.example.wujie.zhihu.cache.LevelTwoCache;
+import com.example.wujie.zhihu.cache.LruImageCache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,8 +52,9 @@ public class FragmentListAdapter extends BaseAdapter {
         mLayoutInflater = LayoutInflater.from(context);
 
         RequestQueue mQueue = Volley.newRequestQueue(context);
-        mImageLoader = new ImageLoader(mQueue, new LevelTwoCache(context, "image", MAX_DISKSIZE, MAX_LRUCACHESIZE,
-                Bitmap.CompressFormat.JPEG, 70));
+        //mImageLoader = new ImageLoader(mQueue, new LevelTwoCache(context, "image", MAX_DISKSIZE, MAX_LRUCACHESIZE,
+          //      Bitmap.CompressFormat.JPEG, 70));
+        mImageLoader = new ImageLoader(mQueue, new LruImageCache(MAX_LRUCACHESIZE));
     }
 
     @Override
@@ -116,8 +117,7 @@ public class FragmentListAdapter extends BaseAdapter {
             viewContainer = arrayList;
 
             RequestQueue mQueue = Volley.newRequestQueue(mContext);
-            mImageLoader = new ImageLoader(mQueue, new LevelTwoCache(mContext, "image", MAX_DISKSIZE, MAX_LRUCACHESIZE,
-                    Bitmap.CompressFormat.JPEG, 70));
+            mImageLoader = new ImageLoader(mQueue, new LruImageCache(MAX_LRUCACHESIZE));
             for (int i = 0; i <top_Stories_Url.length; i++) {
                 String test_url = "";
                 test_url = top_Stories_Url[i];
@@ -132,8 +132,7 @@ public class FragmentListAdapter extends BaseAdapter {
         }else if (getItemViewType(position) == TYPE_BACKGROUND){
             view = mLayoutInflater.inflate(mLayout[2], parent, false);
             RequestQueue mQueue = Volley.newRequestQueue(mContext);
-            mImageLoader = new ImageLoader(mQueue, new LevelTwoCache(mContext, "image", MAX_DISKSIZE, MAX_LRUCACHESIZE,
-                    Bitmap.CompressFormat.JPEG, 70));
+            mImageLoader = new ImageLoader(mQueue, new LruImageCache(MAX_LRUCACHESIZE));
             ImageView imageView = (ImageView)view.findViewById(R.id.imageView);
             ImageLoader.ImageListener listener = ImageLoader.getImageListener(imageView, 0, 0);
             mImageLoader.get(mList.get(position).get("Background").toString(), listener);

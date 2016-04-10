@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onPostCreate(savedInstanceState);
 
     }
-
+//每次在display Menu之前，都会去调用，只要按一次Menu按键，就会调用一次
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         myMenu = menu;

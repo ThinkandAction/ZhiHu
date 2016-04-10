@@ -27,7 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.wujie.zhihu.Info.ContentInfo;
 import com.example.wujie.zhihu.GsonRequest;
 import com.example.wujie.zhihu.R;
-import com.example.wujie.zhihu.cache.LevelTwoCache;
+import com.example.wujie.zhihu.cache.LruImageCache;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class ItemActivity extends AppCompatActivity {
@@ -117,8 +117,7 @@ public class ItemActivity extends AppCompatActivity {
                         webView.loadDataWithBaseURL(mUrl, body, "text/html", "utf-8", null);
                         RequestQueue mQueue = Volley.newRequestQueue(ItemActivity.this);
                         if (response.getImage() != null){
-                            mImageLoader = new ImageLoader(mQueue, new LevelTwoCache(ItemActivity.this, "image", MAX_DISKSIZE, MAX_LRUCACHESIZE,
-                                    Bitmap.CompressFormat.JPEG, 70));
+                            mImageLoader = new ImageLoader(mQueue, new LruImageCache(MAX_LRUCACHESIZE));
                             ImageLoader.ImageListener listener = ImageLoader.getImageListener((ImageView) findViewById(R.id.imageView), 0, 0);
                             mImageLoader.get(response.getImage(), listener);
                         }
