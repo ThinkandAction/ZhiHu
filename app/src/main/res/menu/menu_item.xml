@@ -2,19 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".ItemActivity">
+
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="1" app:showAsAction="never" />
-    <item
-        android:id="@+id/developer_id"
-        android:title="@string/Developer_name"
-        android:orderInCategory="2"
-        app:showAsAction="never"
-        />
-    <item
-        android:id="@+id/version_id"
-        android:title="@string/version_number"
-        android:orderInCategory="3"
-        app:showAsAction="never"
-        />
+        android:orderInCategory="1" app:showAsAction="ifRoom" />
+
 
 </menu>

@@ -65,7 +65,7 @@ public class NoBoringFragment_NoDB extends Fragment implements Response.Listener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mUrl = getArguments().getString(EXTRA_MESSAGE);
         view = inflater.inflate(R.layout.content_fragment, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycleView);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -84,7 +84,7 @@ public class NoBoringFragment_NoDB extends Fragment implements Response.Listener
         });
         loadNews(mUrl);//自动刷新
         ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-        mRecyclerViewAdapter = new RecyclerViewAdapter(context, list, new int[]{R.layout.view_pager,
+        /*mRecyclerViewAdapter = new RecyclerViewAdapter(context, list, new int[]{R.layout.view_pager,
                 R.layout.item_main_list, R.layout.background}, new OnRecyclerItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -95,7 +95,7 @@ public class NoBoringFragment_NoDB extends Fragment implements Response.Listener
                 startActivity(intent);
                 //getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
             }
-        });
+        });*/
         //updateLatestNews(mUrl);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
 

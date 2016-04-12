@@ -84,7 +84,7 @@ public class NoBoringFragment extends Fragment implements Response.Listener<NoBo
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mUrl = getArguments().getString(EXTRA_MESSAGE);
         view = inflater.inflate(R.layout.content_fragment, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycleView);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -102,24 +102,7 @@ public class NoBoringFragment extends Fragment implements Response.Listener<NoBo
             }
         });*/
         ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-        mRecyclerViewAdapter = new RecyclerViewAdapter(context, list, new int[]{R.layout.view_pager,
-                R.layout.item_main_list, R.layout.background}, new OnRecyclerItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Intent intent = new Intent();
-                intent.setClass(context, ItemActivity.class);
-                int id = 0;
-                if (itemList.get(position).get("Stories_Id") instanceof Double){
-                    double m = (double)itemList.get(position).get("Stories_Id");////为什么取出的数据变成了double
-                    id = (int)Math.floor(m);
-                } else {
-                    id = (int)itemList.get(position).get("Stories_Id");
-                }
-                intent.putExtra("url", Constants.Url.STORY_DETAIL + id);//////!!!!!超出范围，不能点击
-                startActivity(intent);
-                //getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
-            }
-        });
+        mRecyclerViewAdapter = new RecyclerViewAdapter(context, list);
         //updateLatestNews(mUrl);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
 

@@ -1,6 +1,7 @@
 package com.example.wujie.zhihu.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
@@ -15,9 +16,11 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.example.wujie.zhihu.Activity.ItemActivity;
 import com.example.wujie.zhihu.Interface.OnRecyclerItemClickListener;
 import com.example.wujie.zhihu.R;
 import com.example.wujie.zhihu.cache.LevelTwoCache;
+import com.example.wujie.zhihu.support.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,13 +41,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private ArrayList<HashMap<String, Object>> mList;
     private ImageLoader mImageLoader;
-    private OnRecyclerItemClickListener mRecyclerItemClickListener;
 
-    public RecyclerViewAdapter(Context context, ArrayList<HashMap<String, Object>> list, int[] layout, OnRecyclerItemClickListener listener){
+    public RecyclerViewAdapter(Context context, ArrayList<HashMap<String, Object>> list){
         mContext = context;
         mList = list;
         mLayoutInflater = LayoutInflater.from(context);
-        mRecyclerItemClickListener = listener;
 
         RequestQueue mQueue = Volley.newRequestQueue(context);
         mImageLoader = new ImageLoader(mQueue, new LevelTwoCache(context, "image", MAX_DISKSIZE, MAX_LRUCACHESIZE,
@@ -170,6 +171,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
 
 
     }
+
+    OnRecyclerItemClickListener mRecyclerItemClickListener = new OnRecyclerItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+            Intent intent = new Intent();
+            intent.setClass(mContext, ItemActivity.class);
+            int id = 0;
+            if (mList.get(position).get("Stories_Id") instanceof Double) {
+                double m = (double) mList.get(position).get("Stories_Id");////为什么取出的数据变成了double
+                id = (int) Math.floor(m);
+            } else {
+                id = (int) mList.get(position).get("Stories_Id");
+            }
+            intent.putExtra("url", Constants.Url.STORY_DETAIL + id);//////!!!!!超出范围，不能点击
+            mContext.startActivity(intent);
+            //getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+        }
+    };
 
     class MyViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageView;
