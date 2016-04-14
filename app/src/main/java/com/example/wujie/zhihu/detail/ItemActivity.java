@@ -1,4 +1,4 @@
-package com.example.wujie.zhihu.Activity;
+package com.example.wujie.zhihu.detail;
 
 import android.annotation.TargetApi;
 import android.content.Intent;

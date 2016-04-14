@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+<!--Manifest中设置主题，让Activity透明-->
     <ImageView
         android:id="@+id/launch_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/launch_small"
+        android:scaleType="centerCrop"
         />
 
 </LinearLayout>

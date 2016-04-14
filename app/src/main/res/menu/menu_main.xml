@@ -13,7 +13,7 @@
     <item
         android:id="@+id/login"
         android:title=""
-        android:icon="@drawable/bell"
+        android:icon="@mipmap/ic_notifications_white_24dp"
         android:orderInCategory="1"
         app:showAsAction="ifRoom"
         />

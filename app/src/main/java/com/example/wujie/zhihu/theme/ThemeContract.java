@@ -1,4 +1,4 @@
-package com.example.wujie.zhihu.home;
+package com.example.wujie.zhihu.theme;
 
 import android.content.Context;
 
@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by wujie on 2016/4/11.
+ * Created by wujie on 2016/4/13.
  */
-public interface HomeContract {
-    interface View extends BaseView<Presenter>{
+public interface ThemeContract {
+    interface View extends BaseView<Presenter> {
 
         Context getViewContent();
 
@@ -20,7 +20,7 @@ public interface HomeContract {
 
         void setRefreshIndicator(boolean refresh);
 
-        void setVisiableNewsDate(int date);
+        void setVisiableNewsId(int id);
 
         void showNews(ArrayList<HashMap<String, Object>> list);
 
@@ -30,11 +30,13 @@ public interface HomeContract {
 
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter {
+
+        void loadNews(int date);
 
         void refreshNews();
 
-        void loadNews(int date);
+        void setThemeId(int id);
 
     }
 

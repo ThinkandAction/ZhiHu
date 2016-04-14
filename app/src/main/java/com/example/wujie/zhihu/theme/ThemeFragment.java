@@ -1,4 +1,4 @@
-package com.example.wujie.zhihu.home;
+package com.example.wujie.zhihu.theme;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -23,11 +23,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by wujie on 2016/4/11.
+ * Created by wujie on 2016/4/13.
  */
-public class HomeFragment extends Fragment implements HomeContract.View {
+public class ThemeFragment extends Fragment implements ThemeContract.View {
 
-    private HomeContract.Presenter mPresenter;
+    private static final String EXTRA_ID = "ID";
+
+    private ThemeContract.Presenter mPresenter;
 
     private Context context;
     private RecyclerView mRecyclerView;
@@ -36,15 +38,27 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private View root;
     private RecyclerViewAdapter mRecyclerViewAdapter;
     private LinearLayoutManager linearLayoutManager;
-    private int visibleNewsDate;
+    private int visibleNewsId = 0;
     private boolean isLoad = false;
+
+    public static ThemeFragment getInstance(int id){
+        ThemeFragment f = new ThemeFragment();
+        Bundle bdl = new Bundle(1);
+        bdl.putInt(EXTRA_ID, id);
+        f.setArguments(bdl);
+        return f;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        ThemePresenter themePresenter = new ThemePresenter(this);
+        mPresenter.setThemeId(getArguments().getInt(EXTRA_ID));
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        HomePresenter homePresenter = new HomePresenter(this);
-
         context = getContext();
         root = inflater.inflate(R.layout.content_fragment, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
@@ -66,6 +80,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             public void onRefresh() {
                 //控件已经设定在加载时无法再加载了
                 //loadNews(mUrl);
+                Log.d("TAG", "-------------------refresh");
                 mPresenter.refreshNews();
             }
         });
@@ -92,15 +107,10 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                     && !isLoad) {
                 Log.d("TAG", "-------load");
                 setLoad(true);
-                mPresenter.loadNews(visibleNewsDate - 1);
+                mPresenter.loadNews(visibleNewsId);
             }
         }
     };
-
-    @Override
-    public void setVisiableNewsDate(int date) {
-        visibleNewsDate = date;
-    }
 
     @Override
     public Context getViewContent() {
@@ -118,8 +128,8 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     @Override
-    public void setPresenter(HomeContract.Presenter presenter) {
-        mPresenter = presenter;
+    public void setVisiableNewsId(int id) {
+        visibleNewsId = id;
     }
 
     @Override
@@ -132,12 +142,19 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public void showNoNews() {
-        noNewsLayout.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
+        if (visibleNewsId == 0){
+            noNewsLayout.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void showAlertNoInternet() {
         Toast.makeText(context, "网络错误", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setPresenter(ThemeContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 }

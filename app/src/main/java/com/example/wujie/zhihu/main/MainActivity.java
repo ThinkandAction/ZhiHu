@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -18,13 +19,11 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.wujie.zhihu.Fragment.HomeFragment;
-import com.example.wujie.zhihu.Fragment.NoBoringFragment_NoDB;
 import com.example.wujie.zhihu.R;
-import com.example.wujie.zhihu.data.AppRepository;
+import com.example.wujie.zhihu.home.HomeFragment;
 import com.example.wujie.zhihu.login.LoginActivity;
 import com.example.wujie.zhihu.set.SetActivity;
-import com.example.wujie.zhihu.support.Constants;
+import com.example.wujie.zhihu.theme.ThemeFragment;
 import com.example.wujie.zhihu.util.ActivityUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -37,11 +36,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private MainContract.Presenter mPresenter;
 
+    private Fragment showingFragment;
+
     private int menu_Type = 0;
     private Menu myMenu;
     private HomeFragment homeFragment;
-    private NoBoringFragment_NoDB noBoringFragment;
+    private ThemeFragment[] themeFragment = new ThemeFragment[14];
     private Toolbar toolbar;
+
+    int[] themeId = {12, 4, 5, 11, 10, 6, 2, 7, 9, 3, 13, 8};
+    String[] title = {"用户推荐日报", "设计日报", "大公司日报", "不许无聊", "互联网安全",
+            "财经日报", "开始游戏", "音乐日报", "动漫日报", "电影日报", "日常心理学", "体育日报"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,11 +66,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        MainPresenter mainPresenter = new MainPresenter(AppRepository.getnstance(), this);
+        MainPresenter mainPresenter = new MainPresenter(this);
 
-        homeFragment = HomeFragment.newInstance(Constants.Url.LATEST_NEWS);
+        homeFragment = new HomeFragment();
         ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), homeFragment, R.id.frameLayout);
-
+        setFragment(homeFragment);
         //mMainPresenter = new MainPresenter(, homeFragment);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -139,47 +144,44 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (homeFragment != null){
-            fragmentTransaction.hide(homeFragment);
-        }
-        if (noBoringFragment != null){
-            fragmentTransaction.hide(noBoringFragment);
-        }
-        switch (menuItem.getItemId()) {
-            case R.id.navigation_item_home:
-                if (homeFragment == null) {
-                    // 如果homeFragment为空，则创建一个并添加到界面上
-                    homeFragment = HomeFragment.newInstance(Constants.Url.LATEST_NEWS);
-                    fragmentTransaction.add(R.id.frameLayout, homeFragment);
-                } else {
-                    // 如果homeFragment不为空，则直接将它显示出来
-                    fragmentTransaction.show(homeFragment);
-                }
-                toolbar.setTitle("首页");
-                menu_Type = 0;
-                onCreateOptionsMenu(myMenu);
-                break;
-
-            case R.id.navigation_item_noboring:
-                if (noBoringFragment == null) {
-                    // 如果homeFragment为空，则创建一个并添加到界面上
-                    noBoringFragment = NoBoringFragment_NoDB.newInstance(Constants.Url.THEME_NO_BORING);
-                    fragmentTransaction.add(R.id.frameLayout, noBoringFragment);
-                } else {
-                    // 如果homeFragment不为空，则直接将它显示出来
-                    fragmentTransaction.show(noBoringFragment);
-                }
-                toolbar.setTitle("不许无聊");
-                menu_Type = 1;
-                onCreateOptionsMenu(myMenu);
-                break;
-            default:
-                break;
+        fragmentTransaction.hide(showingFragment);
+        int order = menuItem.getOrder();
+        int fragmentId;
+        if (order == 1){
+            if (homeFragment == null) {
+                // 如果homeFragment为空，则创建一个并添加到界面上
+                homeFragment = new HomeFragment();
+                fragmentTransaction.add(R.id.frameLayout, homeFragment);
+            } else {
+                // 如果homeFragment不为空，则直接将它显示出来
+                fragmentTransaction.show(homeFragment);
+            }
+            setFragment(homeFragment);
+            toolbar.setTitle("首页");
+            menu_Type = 0;
+        } else {
+            fragmentId = themeId[order - 2];
+            if (themeFragment[fragmentId] == null) {
+                // 如果homeFragment为空，则创建一个并添加到界面上
+                themeFragment[fragmentId] = ThemeFragment.getInstance(fragmentId);
+                fragmentTransaction.add(R.id.frameLayout, themeFragment[fragmentId]);
+            } else {
+                // 如果homeFragment不为空，则直接将它显示出来
+                fragmentTransaction.show(themeFragment[fragmentId]);
+            }
+            setFragment(themeFragment[fragmentId]);
+            toolbar.setTitle(title[order - 2]);
+            menu_Type = 1;
         }
         fragmentTransaction.commit();
+        onCreateOptionsMenu(myMenu);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setFragment(Fragment fragment){
+        showingFragment = fragment;
     }
 
     @Override

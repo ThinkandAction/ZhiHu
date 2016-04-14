@@ -7,7 +7,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.wujie.zhihu.GsonRequest;
 import com.example.wujie.zhihu.Info.JsonLatestNews;
 import com.example.wujie.zhihu.ZhiHuDailyApplication;
-import com.example.wujie.zhihu.data.AppRepository;
 import com.example.wujie.zhihu.db.DBHelper;
 import com.example.wujie.zhihu.support.Constants;
 
@@ -20,28 +19,27 @@ import java.util.Iterator;
  */
 public class HomePresenter implements HomeContract.Presenter {
 
-    private final AppRepository mAppRepository;
     private final HomeContract.View mHomeView;
 
     private RequestQueue mQueue;
 
 
-    public HomePresenter(AppRepository appRepository, HomeContract.View view) {
-        mAppRepository = appRepository;
+    public HomePresenter(HomeContract.View view) {
         mHomeView = view;
+
+        mHomeView.setPresenter(this);
     }
 
     private void getRequestQueue(){
         mQueue = Volley.newRequestQueue(mHomeView.getViewContent());
     }
 
-    @Override
-    public void loadNews() {
+    public void loadNewsFromInternet(String url, Response.ErrorListener errorListener) {
         if (mQueue == null){
             getRequestQueue();
         }
-        GsonRequest gsonRequest = new GsonRequest<JsonLatestNews>(Constants.Url.LATEST_NEWS, JsonLatestNews.class,
-                mResponseListener, mErrorListener);
+        GsonRequest gsonRequest = new GsonRequest<JsonLatestNews>(url, JsonLatestNews.class,
+                mResponseListener, errorListener);
         mQueue.add(gsonRequest);
     }
 
@@ -58,14 +56,6 @@ public class HomePresenter implements HomeContract.Presenter {
             }
             ZhiHuDailyApplication.getDataBase().insertOrUpdateNewsList(Integer.parseInt(response.getDate()),
                     DBHelper.TABLE_NAME, transList);
-        }
-    };
-
-    Response.ErrorListener mErrorListener = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError volleyError) {
-            mHomeView.setRefreshIndicator(false);
-            mHomeView.setLoad(false);
         }
     };
 
@@ -104,8 +94,59 @@ public class HomePresenter implements HomeContract.Presenter {
         return deList;
     }
 
+    private void loadNewsFromDB(int date, DBErrorListener listener){
+        ArrayList<HashMap<String, Object>> list = ZhiHuDailyApplication.getDataBase()
+                .newsOfTheDay(date, DBHelper.TABLE_NAME);
+        if (list != null){
+            mHomeView.showNews(list);
+            mHomeView.setVisiableNewsDate(date - 1);
+            mHomeView.setLoad(false);
+        } else {
+            listener.errorResponse();
+        }
+    }
+
+    @Override
+    public void refreshNews() {
+        loadNewsFromInternet(Constants.Url.LATEST_NEWS, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                mHomeView.setRefreshIndicator(false);
+                mHomeView.showAlertNoInternet();
+                loadNewsFromDB(ZhiHuDailyApplication.getDataBase().tableLastNewsId(DBHelper.TABLE_NAME),
+                        new DBErrorListener() {
+                            @Override
+                            public void errorResponse() {
+                                mHomeView.showNoNews();
+                            }
+                        });
+            }
+        });
+    }
+
+    @Override
+    public void loadNews(final int date) {
+        loadNewsFromDB(date, new DBErrorListener() {
+            @Override
+            public void errorResponse() {
+                loadNewsFromInternet(Constants.Url.STORY_BEFORE + date, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        mHomeView.showAlertNoInternet();
+                        mHomeView.setLoad(false);
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     public void start() {
+        mHomeView.setRefreshIndicator(true);
+        refreshNews();
+    }
 
+    interface DBErrorListener{
+        void errorResponse();
     }
 }

@@ -6,12 +6,83 @@
             android:id="@+id/navigation_item_home"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="首页"
+            android:orderInCategory="1"
+            />
+        <item
+            android:id="@+id/navigation_item_user"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="用户推荐日报"
+            android:orderInCategory="2"
+            />
+        <item
+            android:id="@+id/navigation_item_design"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="设计日报"
+            android:orderInCategory="3"
+            />
+        <item
+            android:id="@+id/navigation_item_company"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="大公司日报"
+            android:orderInCategory="4"
             />
         <item
             android:id="@+id/navigation_item_noboring"
             android:title="不许无聊"
             android:icon="@drawable/ic_launcher"
+            android:orderInCategory="5"
             />
+        <item
+            android:id="@+id/navigation_item_internet_safe"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="互联网安全"
+            android:orderInCategory="6"
+            />
+        <item
+            android:id="@+id/navigation_item_finance"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="财经日报"
+            android:orderInCategory="7"
+            />
+
+        <item
+            android:id="@+id/navigation_item_game"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="开始游戏"
+            android:orderInCategory="8"
+            />
+        <item
+            android:id="@+id/navigation_item_music"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="音乐日报"
+            android:orderInCategory="9"
+            />
+        <item
+            android:id="@+id/navigation_item_cartoon"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="动漫日报"
+            android:orderInCategory="10"
+            />
+        <item
+            android:id="@+id/navigation_item_movie"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="电影日报"
+            android:orderInCategory="11"
+            />
+        <item
+            android:id="@+id/navigation_item_psychology"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="日常心理学"
+            android:orderInCategory="12"
+            />
+        <item
+            android:id="@+id/navigation_item_gym"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="体育日报"
+            android:orderInCategory="13"
+            />
+
+
     </group>
 
 

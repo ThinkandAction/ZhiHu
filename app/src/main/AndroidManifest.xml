@@ -8,14 +8,14 @@
     <application
         android:allowBackup="true"
         android:name=".ZhiHuDailyApplication"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/pc6"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".launch.LaunchActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.Launch" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +27,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activity.ItemActivity"
+            android:name=".detail.ItemActivity"
             android:label="@string/title_activity_item"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>

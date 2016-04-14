@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-import com.example.wujie.zhihu.Activity.ItemActivity;
+import com.example.wujie.zhihu.detail.ItemActivity;
 import com.example.wujie.zhihu.Interface.OnRecyclerItemClickListener;
 import com.example.wujie.zhihu.R;
 import com.example.wujie.zhihu.cache.LevelTwoCache;

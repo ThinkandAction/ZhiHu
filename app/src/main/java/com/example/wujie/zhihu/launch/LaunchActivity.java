@@ -19,7 +19,7 @@ public class LaunchActivity extends Activity {
         setContentView(R.layout.launch);
 
         Handler handler = new Handler();
-        handler.postDelayed(new StartMainContent(), 500);
+        handler.postDelayed(new StartMainContent(), 2500);
 
     }
     class StartMainContent implements Runnable{

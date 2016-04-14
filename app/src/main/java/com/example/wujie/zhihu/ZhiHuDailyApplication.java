@@ -1,17 +1,15 @@
 package com.example.wujie.zhihu;
 
 import android.app.Application;
-import android.content.Context;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.example.wujie.zhihu.db.NoBoringDataBase;
+import com.example.wujie.zhihu.db.NewsDataBase;
 
 /**
  * Created by wujie on 2016/4/7.
  */
 public class ZhiHuDailyApplication extends Application {
     private static ZhiHuDailyApplication applicationContext;
-    private static NoBoringDataBase dataBase;
+    private static NewsDataBase dataBase;
 
     /*public static void initImageLoader(Context context) {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
@@ -27,7 +25,7 @@ public class ZhiHuDailyApplication extends Application {
         return applicationContext;
     }
 
-    public static NoBoringDataBase getDataBase() {
+    public static NewsDataBase getDataBase() {
         return dataBase;
     }
 
@@ -37,7 +35,7 @@ public class ZhiHuDailyApplication extends Application {
         applicationContext = this;
 
         //initImageLoader(getApplicationContext());
-        dataBase = new NoBoringDataBase(getApplicationContext());
+        dataBase = new NewsDataBase(getApplicationContext());
         dataBase.open();
     }
 }
