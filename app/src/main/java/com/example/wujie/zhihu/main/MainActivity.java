@@ -22,7 +22,7 @@ import android.view.WindowManager;
 import com.example.wujie.zhihu.R;
 import com.example.wujie.zhihu.home.HomeFragment;
 import com.example.wujie.zhihu.login.LoginActivity;
-import com.example.wujie.zhihu.set.SetActivity;
+import com.example.wujie.zhihu.set.SettingsActivity;
 import com.example.wujie.zhihu.theme.ThemeFragment;
 import com.example.wujie.zhihu.util.ActivityUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             Log.d("TAG", menu.size() + "");
         } else if (menu_Type == 1 & menu.size() == 3){
             menu.clear();
-            getMenuInflater().inflate(R.menu.menu_item, menu);
+            getMenuInflater().inflate(R.menu.menu_theme, menu);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void showMenuSet() {
-        Intent intent = new Intent(this, SetActivity.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 

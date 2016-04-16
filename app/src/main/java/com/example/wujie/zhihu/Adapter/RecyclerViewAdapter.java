@@ -16,10 +16,10 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-import com.example.wujie.zhihu.detail.ItemActivity;
 import com.example.wujie.zhihu.Interface.OnRecyclerItemClickListener;
 import com.example.wujie.zhihu.R;
 import com.example.wujie.zhihu.cache.LevelTwoCache;
+import com.example.wujie.zhihu.detail.DetailActivity;
 import com.example.wujie.zhihu.support.Constants;
 
 import java.util.ArrayList;
@@ -82,6 +82,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
         if (getItemViewType(position) == TYPE_TOPSTORIES){
             viewHolder.linearLayoutPoints.removeAllViews();
             String[] top_Stories_Title = (String[])(mList.get(position).get("Top_Stories_Title"));
+            int[] top_Stories_Id = (int[]) mList.get(position).get("Top_Stories_Id");
             Log.d("TOP", top_Stories_Title.toString());
             for (int i = 0; i < top_Stories_Title.length; i++){
                 ImageView imageView = new ImageView(mContext);
@@ -106,7 +107,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
                 ImageLoader.ImageListener listener = ImageLoader.getImageListener((ImageView)viewContainer.get(i).findViewById(R.id.pager_image), R.color.colorwWhite, 0);
                 mImageLoader.get(test_url, listener);
             }
-            viewHolder.viewPager.setAdapter(new MyPageAdapter(viewContainer));
+            viewHolder.viewPager.setAdapter(new MyPageAdapter(viewContainer, top_Stories_Id, mContext));
             viewHolder.viewPager.addOnPageChangeListener(new ViewpagerListener(viewHolder.linearLayoutPoints,
                     viewHolder.textView, top_Stories_Title));
             viewHolder.textView.setText(top_Stories_Title[position]);
@@ -125,8 +126,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
             viewHolder.textView.setText(mList.get(position).get("Stories_Title").toString());
             String url = "";
             url = mList.get(position).get("Stories_Url").toString();
-            ImageLoader.ImageListener listener = ImageLoader.getImageListener(viewHolder.imageView, R.color.colorwWhite, 0);//设置了默认图片后就不会导致图片加载错乱闪动
-            mImageLoader.get(url, listener);
+            if (url != ""){
+                ImageLoader.ImageListener listener = ImageLoader.getImageListener(viewHolder.imageView, R.color.colorwWhite, 0);//设置了默认图片后就不会导致图片加载错乱闪动
+                mImageLoader.get(url, listener);
+            } else {
+                viewHolder.imageView.setVisibility(View.GONE);
+            }
+
             viewHolder.itemView.setTag(position);//为了让点击事件获得position
         }
 
@@ -168,15 +174,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
             return TYPE_BACKGROUND;
         }
 
-
-
     }
 
     OnRecyclerItemClickListener mRecyclerItemClickListener = new OnRecyclerItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
             Intent intent = new Intent();
-            intent.setClass(mContext, ItemActivity.class);
+            intent.setClass(mContext, DetailActivity.class);
             int id = 0;
             if (mList.get(position).get("Stories_Id") instanceof Double) {
                 double m = (double) mList.get(position).get("Stories_Id");////为什么取出的数据变成了double
@@ -184,7 +188,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
             } else {
                 id = (int) mList.get(position).get("Stories_Id");
             }
-            intent.putExtra("url", Constants.Url.STORY_DETAIL + id);//////!!!!!超出范围，不能点击
+            intent.putExtra("StoryId", id);//////!!!!!超出范围，不能点击
             mContext.startActivity(intent);
             //getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
         }

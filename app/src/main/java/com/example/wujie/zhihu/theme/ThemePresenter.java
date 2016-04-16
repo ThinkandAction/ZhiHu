@@ -50,13 +50,11 @@ public class ThemePresenter implements ThemeContract.Presenter {
         @Override
         public void onResponse(NoBoringInfo response) {
             ArrayList<HashMap<String, Object>> transList = dealWithResponse(response);
-            if (transList == null){
-                Log.d("TAG", "--------------------------null");
-            }
             mThemeView.showNews(transList);
             mThemeView.setVisiableNewsId(getLastStoryId(response));
             if (response.getBackground() != null){
                 mThemeView.setRefreshIndicator(false);
+                Log.d("TAG", "-----------setfalse");
             } else {
                 mThemeView.setLoad(false);
             }

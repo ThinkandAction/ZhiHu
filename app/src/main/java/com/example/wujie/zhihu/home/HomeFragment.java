@@ -2,6 +2,7 @@ package com.example.wujie.zhihu.home;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -71,7 +72,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         });
 
         mRecyclerView.addOnScrollListener(mScrollListener);
-
         mPresenter.start();
 
         return root;

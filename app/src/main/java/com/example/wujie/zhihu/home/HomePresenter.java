@@ -64,16 +64,19 @@ public class HomePresenter implements HomeContract.Presenter {
         if (response.getTop_stories()!=null){
             String[] top_Stories_Title = new String[response.getTop_stories().size()];
             String[] top_Stories_Url = new String[response.getTop_stories().size()];
+            int[] top_Stories_Id = new int[response.getTop_stories().size()];
             Iterator iterator_TopStories = response.getTop_stories().iterator();
             for (int i = 0;iterator_TopStories.hasNext();i++){
                 JsonLatestNews.Top_stories m = (JsonLatestNews.Top_stories) iterator_TopStories.next();
                 top_Stories_Url[i] = m.getImage();
                 top_Stories_Title[i] = m.getTitle();
+                top_Stories_Id[i] = m.getId();
             }
 
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("Top_Stories_Title", top_Stories_Title);
             map.put("Top_Stories_Url", top_Stories_Url);
+            map.put("Top_Stories_Id", top_Stories_Id);
             deList.add(map);
         }
 
@@ -100,6 +103,7 @@ public class HomePresenter implements HomeContract.Presenter {
         if (list != null){
             mHomeView.showNews(list);
             mHomeView.setVisiableNewsDate(date - 1);
+            mHomeView.setRefreshIndicator(false);
             mHomeView.setLoad(false);
         } else {
             listener.errorResponse();

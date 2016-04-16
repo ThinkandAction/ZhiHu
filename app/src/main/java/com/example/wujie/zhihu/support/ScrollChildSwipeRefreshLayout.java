@@ -33,6 +33,9 @@ public class ScrollChildSwipeRefreshLayout extends SwipeRefreshLayout {
 
     private View mScrollUpChild;
 
+    private boolean mMeasured = false;
+    private boolean mPreMeasureRefreshing = false;
+
     public ScrollChildSwipeRefreshLayout(Context context) {
         super(context);
     }
@@ -47,6 +50,24 @@ public class ScrollChildSwipeRefreshLayout extends SwipeRefreshLayout {
             return ViewCompat.canScrollVertically(mScrollUpChild, -1);
         }
         return super.canChildScrollUp();
+    }
+
+    @Override
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (!mMeasured) {
+            mMeasured = true;
+            setRefreshing(mPreMeasureRefreshing);
+        }
+    }
+
+    @Override
+    public void setRefreshing(boolean refreshing) {
+        if (mMeasured) {
+            super.setRefreshing(refreshing);
+        } else {
+            mPreMeasureRefreshing = refreshing;
+        }
     }
 
     public void setScrollUpChild(View view) {

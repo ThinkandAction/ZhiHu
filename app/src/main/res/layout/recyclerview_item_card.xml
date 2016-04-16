@@ -18,6 +18,7 @@
             android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:minHeight="70dp"
             android:textSize="18sp"
             android:layout_weight="2"
             android:textColor="#000000"
@@ -25,6 +26,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
             android:paddingRight="0dp"
+            android:layout_gravity="center_vertical"
             />
 
         <ImageView

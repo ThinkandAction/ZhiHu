@@ -1,11 +1,16 @@
 package com.example.wujie.zhihu.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.example.wujie.zhihu.detail.DetailActivity;
+import com.example.wujie.zhihu.detail.DetailContract;
+import com.example.wujie.zhihu.support.Constants;
 
 import java.util.List;
 
@@ -14,15 +19,29 @@ import java.util.List;
  */
 public class MyPageAdapter extends PagerAdapter {
     List<View> viewLists;
+    int[] mUrl;
+    Context mContext;
 
-    public MyPageAdapter(List<View> lists)
+    public MyPageAdapter(List<View> lists, int[] url, Context context)
     {
         viewLists = lists;
+        mUrl = url;
+        mContext = context;
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        container.addView(viewLists.get(position), 0);
+    public Object instantiateItem(ViewGroup container, final int position) {
+        View view = viewLists.get(position);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(mContext, DetailActivity.class);
+                intent.putExtra("StoryId", mUrl[position]);//////!!!!!超出范围，不能点击
+                mContext.startActivity(intent);
+            }
+        });
+        container.addView(view, 0);
         return viewLists.get(position);
     }
 
