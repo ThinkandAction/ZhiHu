@@ -29,7 +29,7 @@
         <item
             android:id="@+id/navigation_item_noboring"
             android:title="不许无聊"
-            android:icon="@drawable/ic_launcher"
+            android:icon="@drawable/ic_home_black_24dp"
             android:orderInCategory="5"
             />
         <item

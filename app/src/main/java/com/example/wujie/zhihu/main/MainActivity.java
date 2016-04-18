@@ -2,6 +2,7 @@ package com.example.wujie.zhihu.main;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private MainContract.Presenter mPresenter;
 
     private Fragment showingFragment;
+    private boolean isFocused = false;
 
     private int menu_Type = 0;
     private Menu myMenu;
@@ -51,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setBackgroundDrawableResource(R.color.colorwGrey);
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -114,6 +115,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 break;
             case R.id.pattern:
                 break;
+            case R.id.action_focus:
+                if (!isFocused){
+                    item.setIcon(R.drawable.ic_remove_circle_outline_white_24dp);
+                    isFocused = true;
+                } else {
+                    item.setIcon(R.drawable.ic_add_circle_outline_white_24dp);
+                    isFocused = false;
+                }
+
         }
         return super.onOptionsItemSelected(item);
     }

@@ -20,7 +20,7 @@ import com.example.wujie.zhihu.Interface.OnRecyclerItemClickListener;
 import com.example.wujie.zhihu.R;
 import com.example.wujie.zhihu.cache.LevelTwoCache;
 import com.example.wujie.zhihu.detail.DetailActivity;
-import com.example.wujie.zhihu.support.Constants;
+import com.example.wujie.zhihu.support.ScrollChildSwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,11 +41,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private ArrayList<HashMap<String, Object>> mList;
     private ImageLoader mImageLoader;
+    private ScrollChildSwipeRefreshLayout mScrollChildSwipeRefreshLayout;
 
-    public RecyclerViewAdapter(Context context, ArrayList<HashMap<String, Object>> list){
+    public RecyclerViewAdapter(Context context, ArrayList<HashMap<String, Object>> list, ScrollChildSwipeRefreshLayout layout){
         mContext = context;
         mList = list;
         mLayoutInflater = LayoutInflater.from(context);
+        mScrollChildSwipeRefreshLayout = layout;
 
         RequestQueue mQueue = Volley.newRequestQueue(context);
         mImageLoader = new ImageLoader(mQueue, new LevelTwoCache(context, "image", MAX_DISKSIZE, MAX_LRUCACHESIZE,
@@ -78,7 +80,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        MyViewHolder viewHolder = (MyViewHolder)holder;
+        final MyViewHolder viewHolder = (MyViewHolder)holder;
         if (getItemViewType(position) == TYPE_TOPSTORIES){
             viewHolder.linearLayoutPoints.removeAllViews();
             String[] top_Stories_Title = (String[])(mList.get(position).get("Top_Stories_Title"));
@@ -86,13 +88,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
             Log.d("TOP", top_Stories_Title.toString());
             for (int i = 0; i < top_Stories_Title.length; i++){
                 ImageView imageView = new ImageView(mContext);
-                imageView.setImageResource(R.drawable.ic_launcher);
+                if (i == 0){
+                    imageView.setImageResource(R.drawable.circle_white);
+                } else {
+                    imageView.setImageResource(R.drawable.circle_grey);
+                }
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(25, 25);
                 lp.setMargins(10, 0, 10, 0);
                 imageView.setLayoutParams(lp);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 viewHolder.linearLayoutPoints.addView(imageView);
             }
+
 
             ArrayList<View> viewContainer = new ArrayList<View>();
             String[] top_Stories_Url = (String[])mList.get(position).get("Top_Stories_Url");
@@ -237,23 +244,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
         //当页面被选中时调用；position为当前选中页面的编号
         @Override
         public void onPageSelected(int position) {
-            ((ImageView)linearLayoutPoints.getChildAt(position)).setImageResource(R.drawable.icon_add);
+            ((ImageView)linearLayoutPoints.getChildAt(position)).setImageResource(R.drawable.circle_white);
             if (position == 0){
-                ((ImageView)linearLayoutPoints.getChildAt(position+1)).setImageResource(R.drawable.ic_launcher);
+                ((ImageView)linearLayoutPoints.getChildAt(position+1)).setImageResource(R.drawable.circle_grey);
             } else if (position == linearLayoutPoints.getChildCount()-1) {
-                ((ImageView)linearLayoutPoints.getChildAt(position-1)).setImageResource(R.drawable.ic_launcher);
+                ((ImageView)linearLayoutPoints.getChildAt(position-1)).setImageResource(R.drawable.circle_grey);
             }else {
-                ((ImageView)linearLayoutPoints.getChildAt(position-1)).setImageResource(R.drawable.ic_launcher);
-                ((ImageView)linearLayoutPoints.getChildAt(position+1)).setImageResource(R.drawable.ic_launcher);
+                ((ImageView)linearLayoutPoints.getChildAt(position-1)).setImageResource(R.drawable.circle_grey);
+                ((ImageView)linearLayoutPoints.getChildAt(position+1)).setImageResource(R.drawable.circle_grey);
             }
             textView.setText(title[position]);
         }
 
         //当页面滑动状态改变时调用；有三种状态（0，1，2）。state ==1的时辰表示正在滑动，
         // state==2的时辰表示滑动完毕了，state==0的时辰表示什么都没做
+        //解决viewPager与swipeRefreshLayout滑动冲突
         @Override
         public void onPageScrollStateChanged(int state) {
-
+            mScrollChildSwipeRefreshLayout.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
         }
     }
 }

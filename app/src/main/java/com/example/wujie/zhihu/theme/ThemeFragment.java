@@ -72,7 +72,7 @@ public class ThemeFragment extends Fragment implements ThemeContract.View {
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight);
         noNewsLayout = (ViewGroup)root.findViewById(R.id.noNews);
 
-        mRecyclerViewAdapter = new RecyclerViewAdapter(context, new ArrayList<HashMap<String, Object>>());
+        mRecyclerViewAdapter = new RecyclerViewAdapter(context, new ArrayList<HashMap<String, Object>>(), mSwipeRefreshLayout);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

@@ -3,8 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorwGrey">#EFEFEF</color>
+    <color name="colorGrey">#AFAFAF</color>
     <color name="colorwWhite">#FFFFFF</color>
     <color name="colorItemClicked">#6699FF</color>
     <color name="colorPrimaryLight">#6699FF</color>
+    <color name="colorPrimaryDay">#000000</color>
 </resources>

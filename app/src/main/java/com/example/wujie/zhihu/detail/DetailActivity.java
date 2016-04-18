@@ -38,7 +38,6 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         DetailPresenter detailPresenter = new DetailPresenter(this);
 
         super.onCreate(savedInstanceState);
-        getWindow().setBackgroundDrawableResource(R.color.colorwGrey);
         //getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);//启用transition的API（被调用的Activity中设置）
         setContentView(R.layout.activity_item);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

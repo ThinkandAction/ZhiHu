@@ -12,7 +12,7 @@
         android:layout_gravity="center_vertical"
         android:padding="10dp"
         android:background="@android:color/transparent"
-        android:src="@mipmap/ic_share_white_24dp"
+        android:src="@drawable/ic_share_white_24dp"
         />
 
     <ImageButton
@@ -22,7 +22,7 @@
         android:layout_gravity="center_vertical"
         android:padding="10dp"
         android:background="@android:color/transparent"
-        android:src="@mipmap/ic_star_white_24dp"
+        android:src="@drawable/ic_star_white_24dp"
         />
 
     <LinearLayout
@@ -35,7 +35,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="10dp"
             android:layout_gravity="center_vertical"
-            android:src="@mipmap/ic_comment_white_24dp"
+            android:src="@drawable/ic_comment_white_24dp"
             android:background="@android:color/transparent"
             />
         <TextView
@@ -59,7 +59,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="10dp"
             android:layout_gravity="center_vertical"
-            android:src="@mipmap/ic_thumb_up_white_24dp"
+            android:src="@drawable/ic_thumb_up_white_24dp"
             android:background="@android:color/transparent"
             />
         <TextView
